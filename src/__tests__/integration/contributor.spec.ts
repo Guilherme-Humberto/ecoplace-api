@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import request from "supertest";
 import app from "../../app";
+import ContributorService from '../../app/models/contributor/service'
 
 describe("Contributor", () => {
   test("should return success in contributor register", async () => {
@@ -21,5 +22,12 @@ describe("Contributor", () => {
     });
 
     expect(response.body).toMatchObject({ message: "contributor created" });
+  });
+
+  test("should return success in contributor register", async () => {
+    const data = { email: "test@email.com" };
+    const result = await ContributorService.delete(data.email)
+
+    expect(result).toMatchObject({ message: `${data.email} deleted` });
   });
 });

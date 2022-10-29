@@ -1,6 +1,6 @@
-import app from "../../app";
-import request from "supertest";
 import { describe, expect, test } from "vitest";
+import request from "supertest";
+import app from "../../app";
 
 describe("Admin", () => {
   test("should return data properties", async () => {
@@ -14,7 +14,10 @@ describe("Admin", () => {
     const data = { email: "email@email.com", password: "123" };
 
     const response = await request(app.express).post("/admin/login").send(data);
+    const errorText = JSON.parse(response.text);
+
     expect(response.status).toBe(400);
+    expect(errorText).toMatchObject({ error: "admin not found" });
   });
 
   test("should return admin test (login)", async () => {

@@ -1,8 +1,8 @@
 import { Router } from "express";
 import AdminController from "@app/models/admin/controller";
 import ContributorController from "@app/models/contributor/controller";
-import ResiduePointController from "@app/models/residue_point/controller";
-import ResidueItemController from "@app/models/residue_item/controller";
+import ResiduePointController from "@app/models/residuePoint/controller";
+import ResidueItemController from "@app/models/residueItem/controller";
 
 const router = Router();
 
@@ -11,7 +11,7 @@ router.get("/healthCheck", (_request, response) => response.json({ ok: true }));
 router.post("/admin/login", AdminController.login);
 
 router.get("/contributor/list", ContributorController.listAll);
-router.post("/contributor/create", ContributorController.register);
+router.post("/contributor/create", ContributorController.create);
 
 router.get("/residuePoint/listAll", ResiduePointController.listAllPoints);
 router.get("/residuePoint/get", ResiduePointController.getPontById);

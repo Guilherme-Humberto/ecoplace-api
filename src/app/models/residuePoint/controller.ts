@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { v4 as uuidV4 } from "uuid";
 import service from "./service";
 import { IResiduePoint } from "@interfaces/index";
 import {
   validateCreateResiduePoint,
   validateGetEntityById,
-} from "@app/validation/dataEntry";
+} from "@app/validation";
+import { generateUUID } from "@app/utils";
 
 class ResiduePointController {
   async listAllPoints(_request: Request, response: Response) {
@@ -44,7 +44,7 @@ class ResiduePointController {
   async createResiduePoint(request: Request, response: Response) {
     try {
       const data: IResiduePoint = {
-        id: request.body.id ? request.body.id :uuidV4(),
+        id: request.body.id ? request.body.id : generateUUID(),
         ...request.body
       };
 
@@ -74,7 +74,7 @@ class ResiduePointController {
       const residuePointId = String(request.query.id);
 
       const data: IResiduePoint = {
-        id: request.body.id ? request.body.id : uuidV4(),
+        id: request.body.id ? request.body.id : generateUUID(),
         ...request.body
       };
 

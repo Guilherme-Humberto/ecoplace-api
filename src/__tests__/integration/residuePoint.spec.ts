@@ -1,12 +1,12 @@
-import { IResiduePoint } from "@interfaces/index";
-import request from "supertest";
-import { v4 as uuidV4 } from "uuid";
 import { describe, expect, test } from "vitest";
+import request from "supertest";
+import { generateUUID } from "../../app/utils";
+import { IResiduePoint } from "@interfaces/index";
 import app from "../../app";
 import { residuePointTest } from "../../mocks";
 
 describe("ResiduePoint", () => {
-  const id = uuidV4();
+  const id = generateUUID();
   const data: IResiduePoint = {
     id,
     name: residuePointTest.name,

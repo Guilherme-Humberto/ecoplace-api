@@ -1,8 +1,8 @@
-import { validateGetEntityById } from "@app/validation/dataEntry";
-import { IResidueItem } from "@interfaces/index";
 import { Request, Response } from "express";
-import slugify from "slugify";
 import service from "./service";
+import { validateGetEntityById } from "@app/validation";
+import { IResidueItem } from "@interfaces/index";
+import { generateSlug } from "@app/utils";
 
 class ResidueItemController {
   async listAll(_request: Request, response: Response) {
@@ -29,7 +29,7 @@ class ResidueItemController {
   async createResidueItem(request: Request, response: Response) {
     try {
       const data: IResidueItem = {
-        slug: slugify(request.body.title),
+        slug: generateSlug(request.body.title),
         ...request.body,
       };
 
@@ -46,7 +46,7 @@ class ResidueItemController {
       validateGetEntityById(residueItemId)
 
       const data: IResidueItem = {
-        slug: slugify(request.body.title),
+        slug: generateSlug(request.body.title),
         ...request.body,
       };
 
