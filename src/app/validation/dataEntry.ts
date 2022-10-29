@@ -1,21 +1,19 @@
+import { validate as validateUUID } from 'uuid'
 import { IContributor, IResiduePoint } from "@interfaces/index";
 
-export const validateContributorEntry = (data: IContributor) => {
-  if (!data.email || !data.first_name) {
-    throw Error("email and first_name is required");
-  }
+export const validateCreateContributor = (data: IContributor) => {
+  const isEmptyData = !data.email || !data.name;
 
-  if (typeof data.email !== "string") {
-    throw Error("Email must be a string");
-  }
+  const isValidTypeData =
+    typeof data.email !== "string" || typeof data.name !== "string";
 
-  if (typeof data.first_name !== "string") {
-    throw Error("First name must be a string");
-  }
+  if (isEmptyData) throw Error("non-existent or invalid data");
+  if (isValidTypeData) throw Error("Invalid contributor data");
 };
 
-export const validateResiduePointEntry = (data: IResiduePoint) => {
+export const validateCreateResiduePoint = (data: IResiduePoint) => {
   const isEmptyData =
+    !data.id ||
     !data.name ||
     !data.email ||
     !data.image ||
@@ -29,19 +27,16 @@ export const validateResiduePointEntry = (data: IResiduePoint) => {
     typeof data.phone !== "string" ||
     typeof data.description !== "string";
 
-  if (isEmptyData) {
-    throw Error("Empty or invalid data");
-  }
-
-  if (isValidTypeData) {
-    throw Error("Invalid data");
-  }
+  if (!validateUUID(String(data.id))) throw Error("Invalid id format");
+  if (isEmptyData) throw Error("Empty or invalid data");
+  if (isValidTypeData) throw Error("Invalid residuePoint data");
 };
 
-export const validateGetResiduePointById = (residueId: number) => {
-  const isEmptyData = !residueId;
-  const isValidTypeData = typeof residueId !== "number";
+export const validateGetEntityById = (id: string) => {
+  const isEmptyData = !id;
+  const isValidTypeData = typeof id !== "string";
 
+  if (!validateUUID(id)) throw Error("Invalid id format");
   if (isEmptyData) throw Error("Empty or invalid data");
-  if (isValidTypeData) throw Error("Invalid data");
+  if (isValidTypeData) throw Error("Invalid residuePointById data");
 };

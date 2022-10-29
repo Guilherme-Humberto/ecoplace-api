@@ -1,8 +1,8 @@
 import { connection } from "@database/connection";
 
 interface ContribuitorInput {
-  first_name: string;
-  second_name: string;
+  id: string
+  name: string;
   email: string;
 }
 
@@ -12,14 +12,15 @@ class ContribuitorService {
     return await connection.query(query);
   }
   async create(data: ContribuitorInput) {
-    const { email, first_name } = data;
+    const { id, email, name } = data;
     const findOneQuery = `select * from contributor where email = ?`;
     const [findOneResponse] = await connection.query(findOneQuery, [email]);
 
-    if (findOneResponse) throw Error("Contributor alreary exists");
+    if (findOneResponse) throw Error("contributor alreary exists");
 
-    const createQuery = `insert into contributor (first_name, email) values (?, ?)`;
-    return await connection.query(createQuery, [first_name, email]);
+    const createQuery = `insert into contributor (id, name, email) values (?, ?, ?)`;
+    await connection.query(createQuery, [id, name, email]);
+    return { message: 'contributor created' }
   }
 }
 

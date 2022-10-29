@@ -4,7 +4,7 @@ import { describe, expect, test } from "vitest";
 
 describe("Admin", () => {
   test("should return data properties", async () => {
-    const data = { email: "email@email.com", password: "123" };
+    const data = { email: "admin@email.com", password: "123" };
 
     expect(data).toHaveProperty("email");
     expect(data).toHaveProperty("password");
@@ -18,12 +18,11 @@ describe("Admin", () => {
   });
 
   test("should return admin test (login)", async () => {
-    const dataInput = { email: "test@email.com", password: "123" };
+    const dataInput = { email: "admin@email.com", password: "123" };
 
     const dataOutput = {
-      first_name: "admin",
-      second_name: "test",
-      email: "test@email.com",
+      name: "Admin",
+      email: "admin@email.com",
       status: 0,
     };
 

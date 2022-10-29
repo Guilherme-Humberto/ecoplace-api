@@ -10,19 +10,13 @@ class AdminService {
     const { email, password } = data;
 
     const query = `
-      select 
-        first_name, 
-        second_name,
-        email, 
-        status 
+      select name, email,  status 
       from admin where email = ? 
       and password = ?
     `;
 
     const [response] = await connection.query(query, [email, password]);
-
     if (!response) throw Error("Admin not found");
-
     return response;
   }
 }
