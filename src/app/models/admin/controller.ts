@@ -6,8 +6,7 @@ class AdminController {
     try {
       const result = await service.get(request.body);
       return response.status(200).json(result);
-    } catch (error) {
-      console.log(error);
+    } catch ({ message: error }) {
       return response.status(400).json({ error });
     }
   }

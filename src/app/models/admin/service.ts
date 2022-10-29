@@ -20,6 +20,9 @@ class AdminService {
     `;
 
     const [response] = await connection.query(query, [email, password]);
+
+    if (!response) throw Error("Admin not found");
+
     return response;
   }
 }
