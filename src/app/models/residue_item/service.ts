@@ -3,18 +3,18 @@ import { IResidueItem } from "@interfaces/index";
 
 class ResidueItemService {
   async list() {
-    const query = `select name from residue_item;`;
+    const query = `select title from residue_item;`;
     return await connection.query(query)
   }
   
   async getById(id: string) {
-    const query = `select name from residue_item where id = ?;`;
+    const query = `select title, slug from residue_item where id = ?;`;
     const [residueItem] = await connection.query(query, [id])
     return residueItem
   }
   
   async create(data: IResidueItem) {
-    const { id, title, slug } = data
+    const { id, title, slug, residuePointId } = data
 
     const findBySlug = `select id from residue_item where slug = ?;`;
     const [residueItem] = await connection.query(findBySlug, [slug]);
@@ -22,11 +22,11 @@ class ResidueItemService {
     if (residueItem) throw Error('residue item already exists')
 
     const createQuery = `
-        insert into residue_item (id, title, slug) values (?, ?);
+        insert into residue_item (id, title, slug, residue_point_id) values (?, ?, ?, ?);
     `;
 
-    await connection.query(createQuery, [id, title, slug]);
-    return { message: `${slug} created` }
+    await connection.query(createQuery, [id, title, slug, residuePointId]);
+    return { message: `${slug} successfully created` }
   }
   
   async update(id: string, data: IResidueItem) {
@@ -38,10 +38,10 @@ class ResidueItemService {
     if (!residueItem) throw Error('residue item not found')
 
     const updateQuery = `
-        update from residue_item set title = ?, slug = ? where id = ?;
+        update residue_item set title = ?, slug = ? where id = ?;
     `;
 
-    await connection.query(updateQuery, [title, slug]);
+    await connection.query(updateQuery, [title, slug, id]);
     return { message: `${slug} updated` }
   }
   

@@ -13,7 +13,8 @@ export interface IResiduePoint {
 }
 
 export interface IResidueItem {
-  id: string
+  id?: string
   title: string
   slug: string
+  residuePointId: string
 }
