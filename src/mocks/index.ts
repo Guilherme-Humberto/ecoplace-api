@@ -1,4 +1,4 @@
-export const residuePointTest = {
+export const collectionCenterMock = {
   id: '1',
   name: "test",
   description: "Ponto de coleta teste",
@@ -7,9 +7,9 @@ export const residuePointTest = {
   email: "test@email.com",
 };
 
-export const residueItemTest = {
+export const collectionItemMock = {
   id: '1',
   title: 'Teste',
   slug: 'teste',
-  residuePointId: '6c3363e4-57b8-11ed-8809-00155d4f5836'
+  collectionCenterId: '40bd5352-58ad-11ed-a455-0045e2952c90'
 };

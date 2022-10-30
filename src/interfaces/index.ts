@@ -3,7 +3,7 @@ export interface IContributor {
   email: string;
 }
 
-export interface IResiduePoint {
+export interface ICollectionCenter {
   id?: string;
   name: string;
   description: string;
@@ -12,9 +12,9 @@ export interface IResiduePoint {
   email: string;
 }
 
-export interface IResidueItem {
+export interface ICollectionItem {
   id?: string
   title: string
   slug: string
-  residuePointId: string
+  collectionCenterId: string
 }

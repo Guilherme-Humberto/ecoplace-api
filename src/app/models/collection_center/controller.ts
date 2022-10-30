@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import service from "./service";
-import { IResiduePoint } from "@interfaces/index";
+import { ICollectionCenter } from "@interfaces/index";
+import { generateUUID } from "@app/utils";
 import {
-  validateCreateResiduePoint,
+  validateCreateCollectionCenter,
   validateGetEntityById,
 } from "@app/validation";
-import { generateUUID } from "@app/utils";
 
-class ResiduePointController {
-  async listAllPoints(_request: Request, response: Response) {
+class CollectionCenterController {
+  async listAll(_request: Request, response: Response) {
     try {
       const result = await service.listAll();
       return response.status(200).json(result);
@@ -19,36 +19,36 @@ class ResiduePointController {
 
   async getPontById(request: Request, response: Response) {
     try {
-      const residueItemId = String(request.query.id);
-      validateGetEntityById(residueItemId);
+      const collectionItemId = String(request.query.id);
+      validateGetEntityById(collectionItemId);
 
-      const result = await service.getById(residueItemId);
+      const result = await service.getById(collectionItemId);
       return response.status(200).json(result);
     } catch ({ message: error }) {
       return response.status(400).json({ error });
     }
   }
 
-  async getPontByResidueItem(request: Request, response: Response) {
+  async getPontByCollectionItem(request: Request, response: Response) {
     try {
-      const residueItemId = String(request.query.id);
-      validateGetEntityById(residueItemId);
+      const collectionItemId = String(request.query.id);
+      validateGetEntityById(collectionItemId);
 
-      const result = await service.getByResidueItem(residueItemId);
+      const result = await service.getByCollectionItem(collectionItemId);
       return response.status(200).json(result);
     } catch ({ message: error }) {
       return response.status(400).json({ error });
     }
   }
 
-  async createResiduePoint(request: Request, response: Response) {
+  async createCollectionCenter(request: Request, response: Response) {
     try {
-      const data: IResiduePoint = {
+      const data: ICollectionCenter = {
         id: request.body.id ? request.body.id : generateUUID(),
         ...request.body
       };
 
-      validateCreateResiduePoint(data);
+      validateCreateCollectionCenter(data);
 
       const result = await service.create(data);
       return response.status(200).json(result);
@@ -57,31 +57,31 @@ class ResiduePointController {
     }
   }
 
-  async deleteResiduePoint(request: Request, response: Response) {
+  async deleteCollectionCenter(request: Request, response: Response) {
     try {
-      const residuePointId = String(request.query.id);
-      validateGetEntityById(residuePointId);
+      const collectionCenterId = String(request.query.id);
+      validateGetEntityById(collectionCenterId);
 
-      const result = await service.delete(residuePointId);
+      const result = await service.delete(collectionCenterId);
       return response.status(200).json(result);
     } catch ({ message: error }) {
       return response.status(400).json({ error });
     }
   }
 
-  async updateResiduePoint(request: Request, response: Response) {
+  async updateCollectionCenter(request: Request, response: Response) {
     try {
-      const residuePointId = String(request.query.id);
+      const collectionCenterId = String(request.query.id);
 
-      const data: IResiduePoint = {
+      const data: ICollectionCenter = {
         id: request.body.id ? request.body.id : generateUUID(),
         ...request.body
       };
 
-      validateGetEntityById(residuePointId);
-      validateCreateResiduePoint(data);
+      validateGetEntityById(collectionCenterId);
+      validateCreateCollectionCenter(data);
 
-      const result = await service.update(residuePointId, data);
+      const result = await service.update(collectionCenterId, data);
       return response.status(200).json(result);
     } catch ({ message: error }) {
       return response.status(400).json({ error });
@@ -89,4 +89,4 @@ class ResiduePointController {
   }
 }
 
-export default new ResiduePointController();
+export default new CollectionCenterController();

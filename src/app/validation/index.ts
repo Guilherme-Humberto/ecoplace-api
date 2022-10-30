@@ -1,5 +1,5 @@
 import { validate as validateUUID } from 'uuid'
-import { IContributor, IResiduePoint } from "@interfaces/index";
+import { IContributor, ICollectionCenter } from "@interfaces/index";
 
 export const validateCreateContributor = (data: IContributor) => {
   const isEmptyData = !data.email || !data.name;
@@ -11,7 +11,7 @@ export const validateCreateContributor = (data: IContributor) => {
   if (isValidTypeData) throw Error("Invalid contributor data");
 };
 
-export const validateCreateResiduePoint = (data: IResiduePoint) => {
+export const validateCreateCollectionCenter = (data: ICollectionCenter) => {
   const isEmptyData =
     !data.id ||
     !data.name ||
@@ -29,7 +29,7 @@ export const validateCreateResiduePoint = (data: IResiduePoint) => {
 
   if (!validateUUID(String(data.id))) throw Error("Invalid id format");
   if (isEmptyData) throw Error("Empty or invalid data");
-  if (isValidTypeData) throw Error("Invalid residuePoint data");
+  if (isValidTypeData) throw Error("Invalid collectionCenter data");
 };
 
 export const validateGetEntityById = (id: string) => {
@@ -38,5 +38,5 @@ export const validateGetEntityById = (id: string) => {
 
   if (!validateUUID(id)) throw Error("Invalid id format");
   if (isEmptyData) throw Error("Empty or invalid data");
-  if (isValidTypeData) throw Error("Invalid residuePointById data");
+  if (isValidTypeData) throw Error("Invalid collectionCenterById data");
 };

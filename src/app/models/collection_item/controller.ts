@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import service from "./service";
 import { validateGetEntityById } from "@app/validation";
-import { IResidueItem } from "@interfaces/index";
+import { ICollectionItem } from "@interfaces/index";
 import { generateSlug } from "@app/utils";
 
-class ResidueItemController {
+class CollectionItemController {
   async listAll(_request: Request, response: Response) {
     try {
       const result = await service.list();
@@ -16,19 +16,19 @@ class ResidueItemController {
 
   async getOneById(request: Request, response: Response) {
     try {
-      const residueItemId = String(request.query.id);
-      validateGetEntityById(residueItemId)
+      const collectionItemId = String(request.query.id);
+      validateGetEntityById(collectionItemId)
 
-      const result = await service.getById(residueItemId);
+      const result = await service.getById(collectionItemId);
       return response.status(200).json(result);
     } catch ({ message: error }) {
       return response.status(400).json({ error });
     }
   }
 
-  async createResidueItem(request: Request, response: Response) {
+  async createCollectionItem(request: Request, response: Response) {
     try {
-      const data: IResidueItem = {
+      const data: ICollectionItem = {
         slug: generateSlug(request.body.title),
         ...request.body,
       };
@@ -40,29 +40,29 @@ class ResidueItemController {
     }
   }
 
-  async updateResidueItem(request: Request, response: Response) {
+  async updateCollectionItem(request: Request, response: Response) {
     try {
-      const residueItemId = String(request.query.id);
-      validateGetEntityById(residueItemId)
+      const collectionItemId = String(request.query.id);
+      validateGetEntityById(collectionItemId)
 
-      const data: IResidueItem = {
+      const data: ICollectionItem = {
         slug: generateSlug(request.body.title),
         ...request.body,
       };
 
-      const result = await service.update(residueItemId, data);
+      const result = await service.update(collectionItemId, data);
       return response.status(200).json(result);
     } catch ({ message: error }) {
       return response.status(400).json({ error });
     }
   }
 
-  async deleteResidueItem(request: Request, response: Response) {
+  async deleteCollectionItem(request: Request, response: Response) {
     try {
-      const residueItemId = String(request.query.id);
-      validateGetEntityById(residueItemId)
+      const collectionItemId = String(request.query.id);
+      validateGetEntityById(collectionItemId)
 
-      const result = await service.delete(residueItemId);
+      const result = await service.delete(collectionItemId);
       return response.status(200).json(result);
     } catch ({ message: error }) {
       return response.status(400).json({ error });
@@ -70,4 +70,4 @@ class ResidueItemController {
   }
 }
 
-export default new ResidueItemController();
+export default new CollectionItemController();

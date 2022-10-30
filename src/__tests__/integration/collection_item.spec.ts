@@ -1,22 +1,22 @@
 import { describe, expect, test } from "vitest";
 import request from "supertest";
 import { generateUUID } from "../../app/utils";
-import { IResidueItem } from "@interfaces/index";
+import { ICollectionItem } from "@interfaces/index";
 import app from "../../app";
-import { residueItemTest } from "../../mocks";
+import { collectionItemMock } from "../../mocks";
 
-describe("ResidueItem", () => {
+describe("Collection Item", () => {
   const id = generateUUID();
-  const data: IResidueItem = {
+  const data: ICollectionItem = {
     id,
-    title: residueItemTest.title,
-    slug: residueItemTest.slug,
-    residuePointId: residueItemTest.residuePointId
+    title: collectionItemMock.title,
+    slug: collectionItemMock.slug,
+    collectionCenterId: collectionItemMock.collectionCenterId
   };
 
-  test("should return success in create residue item", async () => {
+  test("should return success in create collection item", async () => {
     const response = await request(app.express)
-      .post("/residueItem/create")
+      .post("/collectionItem/create")
       .send(data);
 
     const errorText = JSON.parse(response.text);
@@ -28,13 +28,13 @@ describe("ResidueItem", () => {
     });
   });
 
-  test("should return success in update residue item", async () => {
+  test("should return success in update collection item", async () => {
     const query = { id };
 
     data["title"] = "Novo nome do item de coleta";
 
     const response = await request(app.express)
-      .put("/residueItem/update")
+      .put("/collectionItem/update")
       .query(query)
       .send(data);
 
@@ -47,22 +47,22 @@ describe("ResidueItem", () => {
     });
   });
 
-  test("should return residueItem mock", async () => {
+  test("should return collectionItem mock", async () => {
     const query = { id };
 
     const response = await request(app.express)
-      .get("/residueItem/get")
+      .get("/collectionItem/get")
       .query(query);
 
     expect(response.body).toHaveProperty("title");
     expect(response.body).toHaveProperty("slug");
   });
 
-  test("should return success in delete residueItem", async () => {
+  test("should return success in delete collectionItem", async () => {
     const query = { id };
 
     const response = await request(app.express)
-      .delete("/residueItem/delete")
+      .delete("/collectionItem/delete")
       .query(query);
 
     expect(response.body).toMatchObject({ message: `${id} deleted` });
