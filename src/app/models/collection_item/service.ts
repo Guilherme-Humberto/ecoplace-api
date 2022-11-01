@@ -3,7 +3,7 @@ import { ICollectionItem } from "@interfaces/index";
 
 class CollectionItemService {
   async list() {
-    const query = `select title from collection_item;`;
+    const query = `select title, slug, image from collection_item;`;
     return await connection.query(query)
   }
   

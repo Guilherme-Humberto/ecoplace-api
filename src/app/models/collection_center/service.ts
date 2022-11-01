@@ -3,11 +3,8 @@ import { ICollectionCenter } from "@interfaces/index";
 
 class CollectionCenterService {
   async listAll() {
-    const query = `
-      select name, description, image, phone, email from collection_center;
-    `;
-    const [result] = await connection.query(query);
-    return result;
+    const query = `select name, description, image, phone, email from collection_center;`;
+    return await connection.query(query);
   }
 
   async getById(id: string) {
