@@ -16,5 +16,6 @@ export interface ICollectionItem {
   id?: string
   title: string
   slug: string
+  image: string
   collectionCenterId: string
 }

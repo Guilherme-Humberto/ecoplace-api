@@ -26,6 +26,17 @@ class CollectionCenterService {
     return collectionCenter;
   }
 
+  async getByCollectionCenterByIdAddrs(mesoRegionId: number, microRegionId: number) {
+    const query = `
+      select cd.* from collection_center cd inner join 
+      collection_center_addrs cda on cd.id = cda.collection_center_id 
+      where cda.mesoregion_id = ? and cda.microregion_id = ?;
+    `
+
+    const [collectionCenter] = await connection.query(query, [mesoRegionId, microRegionId])
+    return collectionCenter
+  }
+
   async create(data: ICollectionCenter) {
     const { id, name, email, image, phone, description } = data;
     const findByEmailQuery = `select id from collection_center where email = ?;`;

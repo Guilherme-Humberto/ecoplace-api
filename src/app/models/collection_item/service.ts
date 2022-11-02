@@ -14,7 +14,7 @@ class CollectionItemService {
   }
   
   async create(data: ICollectionItem) {
-    const { id, title, slug, collectionCenterId } = data
+    const { id, title, slug, image, collectionCenterId } = data
 
     const findBySlug = `select id from collection_item where slug = ?;`;
     const [collectionItem] = await connection.query(findBySlug, [slug]);
@@ -22,10 +22,10 @@ class CollectionItemService {
     if (collectionItem) throw Error('collection item already exists')
 
     const createQuery = `
-        insert into collection_item (id, title, slug, collection_center_id) values (?, ?, ?, ?);
+        insert into collection_item (id, title, slug, image, collection_center_id) values (?, ?, ?, ?, ?);
     `;
 
-    await connection.query(createQuery, [id, title, slug, collectionCenterId]);
+    await connection.query(createQuery, [id, title, slug, image, collectionCenterId]);
     return { message: `${slug} successfully created` }
   }
   

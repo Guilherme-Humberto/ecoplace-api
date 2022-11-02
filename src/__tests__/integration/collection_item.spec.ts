@@ -11,6 +11,7 @@ describe("Collection Item", () => {
     id,
     title: collectionItemMock.title,
     slug: collectionItemMock.slug,
+    image: collectionItemMock.image,
     collectionCenterId: collectionItemMock.collectionCenterId
   };
 
