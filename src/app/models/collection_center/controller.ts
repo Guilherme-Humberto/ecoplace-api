@@ -5,6 +5,7 @@ import { generateUUID } from "@app/utils";
 import {
   validateCreateCollectionCenter,
   validateGetEntityById,
+  validateRegionByIds,
 } from "@app/validation";
 
 class CollectionCenterController {
@@ -45,6 +46,8 @@ class CollectionCenterController {
     try {
       const mesoRegionId = Number(request.query.meso_region_id);
       const microRegionId = Number(request.query.micro_region_id);
+
+      await validateRegionByIds(mesoRegionId, microRegionId)
 
       const result = await service.getByCollectionCenterByIdAddrs(mesoRegionId, microRegionId);
       return response.status(200).json(result);
