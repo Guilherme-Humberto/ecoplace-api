@@ -14,7 +14,7 @@ class CollectionItemService {
   }
   
   async create(data: ICollectionItem) {
-    const { id, title, slug, image, collection_center_id } = data
+    const { id, title, slug, image } = data
 
     const findBySlug = `select id from tbl_collection_item where slug = ?;`;
     const [collectionItem] = await connection.query(findBySlug, [slug]);
@@ -22,16 +22,11 @@ class CollectionItemService {
     if (collectionItem) throw Error('collection item already exists')
 
     const createQuery = `
-        insert into tbl_collection_item (id, title, slug, image, collection_center_id) values (?, ?, ?, ?, ?);
+      insert into tbl_collection_item 
+      (id, title, slug, image) values (?, ?, ?, ?);
     `;
 
-    await connection.query(createQuery, [
-      id,
-      title,
-      slug,
-      image,
-      collection_center_id,
-    ]);
+    await connection.query(createQuery, [id, title, slug, image]);
     
     return { message: `${slug} successfully created` }
   }
@@ -39,13 +34,13 @@ class CollectionItemService {
   async update(id: string, data: ICollectionItem) {
     const { title, slug } = data
 
-    const findBySlug = `select id from tbl_collection_item where id = ?;`;
-    const [collectionItem] = await connection.query(findBySlug, [id]);
+    const findBySlugQuery = `select id from tbl_collection_item where id = ?;`;
+    const [collectionItem] = await connection.query(findBySlugQuery, [id]);
 
     if (!collectionItem) throw Error('collection item not found')
 
     const updateQuery = `
-        update tbl_collection_item set title = ?, slug = ? where id = ?;
+      update tbl_collection_item set title = ?, slug = ? where id = ?;
     `;
 
     await connection.query(updateQuery, [title, slug, id]);
@@ -53,7 +48,7 @@ class CollectionItemService {
   }
   
   async delete(id: string) {
-    const query = `delete from tbl_collection_item where id = ?`
+    const query = `delete from tbl_collection_item where id = ?;`;
     await connection.query(query, [id])
     return { message: `${id} deleted` }
   }

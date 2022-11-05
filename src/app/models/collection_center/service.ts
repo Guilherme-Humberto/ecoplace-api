@@ -17,7 +17,7 @@ class CollectionCenterService {
     return collectionCenter;
   }
 
-  async getCollectionCenterByRegion({
+  async getCollectionCenterDetails({
     item_id,
     mesoregion_id,
     microregion_id,
@@ -82,7 +82,9 @@ class CollectionCenterService {
     if (findByEmailResponse) throw Error("collection center already exists");
 
     const createQuery = `
-      insert into tbl_collection_center (id, name, email, image, phone, description) values (?, ?, ?, ?, ?, ?);
+      insert into tbl_collection_center 
+      (id, name, email, image, phone, description)
+      values (?, ?, ?, ?, ?, ?);
     `;
 
     await connection.query(createQuery, [
@@ -98,11 +100,8 @@ class CollectionCenterService {
   }
 
   async delete(id: string) {
-    const deleteCollectionItemQuery = `delete from tbl_collection_item where collection_center_id = ?;`;
-    const deleteCollectionCenterQuery = `delete from tbl_collection_center where id = ?;`;
-
-    await connection.query(deleteCollectionItemQuery, [id]);
-    await connection.query(deleteCollectionCenterQuery, [id]);
+    const query = `delete from tbl_collection_center where id = ?;`;
+    await connection.query(query, [id]);
 
     return { message: `${id} deleted` };
   }

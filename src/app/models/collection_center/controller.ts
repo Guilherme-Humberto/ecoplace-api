@@ -36,7 +36,7 @@ class CollectionCenterController {
 
       await validateRegionByIds(mesoregion_id, microregion_id)
 
-      const result = await service.getCollectionCenterByRegion({
+      const result = await service.getCollectionCenterDetails({
         item_id,
         mesoregion_id,
         microregion_id,
