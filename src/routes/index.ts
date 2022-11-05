@@ -13,10 +13,9 @@ router.post("/admin/login", AdminController.login);
 router.get("/contributor/list", ContributorController.listAll);
 router.post("/contributor/create", ContributorController.create);
 
+router.post("/collectionCenter", CollectionCenterController.getCollectionCenter);
 router.get("/collectionCenter/listAll", CollectionCenterController.listAll);
 router.get("/collectionCenter/get", CollectionCenterController.getCollectionById);
-router.get("/collectionCenter/item", CollectionCenterController.getCollectionCenterByItems);
-router.get("/collectionCenter/addrs", CollectionCenterController.getCollectionByAddrs);
 router.post("/collectionCenter/create", CollectionCenterController.createCollectionCenter);
 router.delete("/collectionCenter/delete", CollectionCenterController.deleteCollectionCenter);
 router.put("/collectionCenter/update", CollectionCenterController.updateCollectionCenter);

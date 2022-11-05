@@ -1,45 +1,79 @@
+import { formatedCollectionsDetails } from "@app/utils";
 import { connection } from "@database/connection";
 import { ICollectionCenter } from "@interfaces/index";
 
 class CollectionCenterService {
   async listAll() {
-    const query = `select name, description, image, phone, email from collection_center;`;
+    const query = `select name, description, image, phone, email from tbl_collection_center;`;
     return await connection.query(query);
   }
 
   async getById(id: string) {
     const query = `
       select name, description, image, phone, email 
-      from collection_center where id = ?;
+      from tbl_collection_center where id = ?;
     `;
     const [collectionCenter] = await connection.query(query, [id]);
     return collectionCenter;
   }
 
-  async getByCollectionItem(id: string) {
-    const query = `
-      select a.name, a.description, a.image, a.phone, a.email 
-      from collection_center as a inner join collection_item b on 
-      a.id = b.id where b.id = ?;
-    `;
-    const [collectionCenter] = await connection.query(query, [id]);
-    return collectionCenter;
-  }
+  async getCollectionCenterByRegion({
+    item_id,
+    mesoregion_id,
+    microregion_id,
+  }: any) {
+    let idArray: string[] | string = []
+    let conditional = ";"
 
-  async getByCollectionCenterByIdAddrs(mesoRegionId: number, microRegionId: number) {
-    const query = `
-      select cd.* from collection_center cd inner join 
-      collection_center_addrs cda on cd.id = cda.collection_center_id 
-      where cda.mesoregion_id = ? and cda.microregion_id = ?;
+    if (item_id && Array.isArray(item_id)) {
+      idArray = item_id.map(id => `"${id}"`).join(',')
+    }
+
+    if (idArray.length >= 1) {
+      conditional = `and item_id in (${idArray})`
+    }
+
+    const queryCollectionCenter = `
+      select * from vw_collection_center_details
+      where mesoregion_id = ? and microregion_id = ?${conditional}
+    `;
+
+    const queryCollectionAddrs = `
+      select * from vw_collection_addrs
+      where mesoregion_id = ? and microregion_id = ?;
     `
 
-    const [collectionCenter] = await connection.query(query, [mesoRegionId, microRegionId])
-    return collectionCenter
+    const collectionsCenter = await connection.query(
+      queryCollectionCenter, [mesoregion_id, microregion_id]
+    );
+
+    if (!collectionsCenter || collectionsCenter.length == 0) return []
+
+    const collectionCenterIds = collectionsCenter
+      .map((item: { id: string }) => `'${item.id}'`)
+      .join(",");
+
+    const queryCollectionItem = `
+      select * from vw_collection_item_details
+      where collection_center_id in (${collectionCenterIds});
+    `
+
+    const collectionsAddrs = await connection.query(
+      queryCollectionAddrs, [mesoregion_id, microregion_id]
+    );
+
+    const collectionsItems = await connection.query(queryCollectionItem);
+
+    return formatedCollectionsDetails({
+      collectionsAddrs,
+      collectionsCenter,
+      collectionsItems,
+    });
   }
 
   async create(data: ICollectionCenter) {
     const { id, name, email, image, phone, description } = data;
-    const findByEmailQuery = `select id from collection_center where email = ?;`;
+    const findByEmailQuery = `select id from tbl_collection_center where email = ?;`;
 
     const [findByEmailResponse] = await connection.query(findByEmailQuery, [
       data.email,
@@ -48,7 +82,7 @@ class CollectionCenterService {
     if (findByEmailResponse) throw Error("collection center already exists");
 
     const createQuery = `
-      insert into collection_center (id, name, email, image, phone, description) values (?, ?, ?, ?, ?, ?);
+      insert into tbl_collection_center (id, name, email, image, phone, description) values (?, ?, ?, ?, ?, ?);
     `;
 
     await connection.query(createQuery, [
@@ -60,12 +94,12 @@ class CollectionCenterService {
       description,
     ]);
 
-    return { message: `collection center successfully created` }
+    return { message: `collection center successfully created` };
   }
-  
+
   async delete(id: string) {
-    const deleteCollectionItemQuery = `delete from collection_item where collection_center_id = ?;`;
-    const deleteCollectionCenterQuery = `delete from collection_center where id = ?;`;
+    const deleteCollectionItemQuery = `delete from tbl_collection_item where collection_center_id = ?;`;
+    const deleteCollectionCenterQuery = `delete from tbl_collection_center where id = ?;`;
 
     await connection.query(deleteCollectionItemQuery, [id]);
     await connection.query(deleteCollectionCenterQuery, [id]);
@@ -75,15 +109,13 @@ class CollectionCenterService {
 
   async update(id: string, data: ICollectionCenter) {
     const { name, email, image, phone, description } = data;
-    const findByIdQuery = `select id from collection_center where id = ?;`;
+    const findByIdQuery = `select id from tbl_collection_center where id = ?;`;
 
-    const [findByIdResponse] = await connection.query(findByIdQuery, [
-      id,
-    ]);
+    const [findByIdResponse] = await connection.query(findByIdQuery, [id]);
 
     if (!findByIdResponse) throw Error("collection center not found");
     const updateQuery = `
-      update collection_center set name = ?, 
+      update tbl_collection_center set name = ?, 
       email = ?, image = ?, phone = ?, 
       description = ? where id = ?;
     `;
@@ -94,10 +126,10 @@ class CollectionCenterService {
       image,
       phone,
       description,
-      id
+      id,
     ]);
 
-    return { message: `${id} updated` }
+    return { message: `${id} updated` };
   }
 }
 

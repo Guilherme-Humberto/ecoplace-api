@@ -4,7 +4,7 @@ export interface IContributor {
 }
 
 export interface ICollectionCenter {
-  id?: string;
+  id: string;
   name: string;
   description: string;
   image: string;
@@ -13,9 +13,24 @@ export interface ICollectionCenter {
 }
 
 export interface ICollectionItem {
-  id?: string
+  id: string
   title: string
   slug: string
   image: string
-  collectionCenterId: string
+  collection_center_id?: string
+}
+
+export interface ICollectionAddrs {
+  id: string
+  addrs_name: string
+  addrs_number: number
+  zip_code: string
+  district: string
+  collection_center_id?: string
+}
+
+export interface IFormatCollectionDetails {
+  collectionsCenter: ICollectionCenter[]
+  collectionsItems: ICollectionItem[]
+  collectionsAddrs: ICollectionAddrs[]
 }

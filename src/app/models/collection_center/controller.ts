@@ -30,26 +30,18 @@ class CollectionCenterController {
     }
   }
 
-  async getCollectionCenterByItems(request: Request, response: Response) {
+  async getCollectionCenter(request: Request, response: Response) {
     try {
-      const collectionItemId = String(request.query.id);
-      validateGetEntityById(collectionItemId);
+      const { item_id, mesoregion_id, microregion_id } = request.body;
 
-      const result = await service.getByCollectionItem(collectionItemId);
-      return response.status(200).json(result);
-    } catch ({ message: error }) {
-      return response.status(400).json({ error });
-    }
-  }
+      await validateRegionByIds(mesoregion_id, microregion_id)
 
-  async getCollectionByAddrs(request: Request, response: Response) {
-    try {
-      const mesoRegionId = Number(request.query.meso_region_id);
-      const microRegionId = Number(request.query.micro_region_id);
+      const result = await service.getCollectionCenterByRegion({
+        item_id,
+        mesoregion_id,
+        microregion_id,
+      });
 
-      await validateRegionByIds(mesoRegionId, microRegionId)
-
-      const result = await service.getByCollectionCenterByIdAddrs(mesoRegionId, microRegionId);
       return response.status(200).json(result);
     } catch ({ message: error }) {
       return response.status(400).json({ error });
