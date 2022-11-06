@@ -2,6 +2,12 @@ import { formatedCollectionsDetails } from "@app/utils";
 import { connection } from "@database/connection";
 import { ICollectionCenter } from "@interfaces/index";
 
+const resultNotFound = (response: any) => !response || response.length == 0;
+
+const joinIds = (idsArray: string[]) => {
+  return idsArray.map((id) => `"${id}"`).join(",");
+};
+
 class CollectionCenterService {
   async listAll() {
     const query = `select name, description, image, phone, email from tbl_collection_center;`;
@@ -22,47 +28,49 @@ class CollectionCenterService {
     mesoregion_id,
     microregion_id,
   }: any) {
-    let idArray: string[] | string = []
-    let conditional = ";"
+    const regionParameters = [mesoregion_id, microregion_id];
 
-    if (item_id && Array.isArray(item_id)) {
-      idArray = item_id.map(id => `"${id}"`).join(',')
-    }
+    let inItemsIds: string[] | string = [];
+    let conditional = ";";
 
-    if (idArray.length >= 1) {
-      conditional = `and item_id in (${idArray})`
-    }
+    if (item_id && Array.isArray(item_id)) inItemsIds = joinIds(item_id);
+    if (inItemsIds.length >= 1) conditional = `and item_id in (${inItemsIds})`;
 
-    const queryCollectionCenter = `
+    const collectionCenterQuery = `
       select * from vw_collection_center_details
-      where mesoregion_id = ? and microregion_id = ?${conditional}
+      where mesoregion_id = ? and microregion_id = ? ${conditional}
     `;
 
-    const queryCollectionAddrs = `
+    const collectionsCenter = await connection.query(
+      collectionCenterQuery,
+      regionParameters
+    );
+
+    if (resultNotFound(collectionsCenter)) return [];
+
+    const collectionAddrsQuery = `
       select * from vw_collection_addrs
       where mesoregion_id = ? and microregion_id = ?;
-    `
-
-    const collectionsCenter = await connection.query(
-      queryCollectionCenter, [mesoregion_id, microregion_id]
-    );
-
-    if (!collectionsCenter || collectionsCenter.length == 0) return []
-
-    const collectionCenterIds = collectionsCenter
-      .map((item: { id: string }) => `'${item.id}'`)
-      .join(",");
-
-    const queryCollectionItem = `
-      select * from vw_collection_item_details
-      where collection_center_id in (${collectionCenterIds});
-    `
+    `;
 
     const collectionsAddrs = await connection.query(
-      queryCollectionAddrs, [mesoregion_id, microregion_id]
+      collectionAddrsQuery,
+      regionParameters
     );
 
-    const collectionsItems = await connection.query(queryCollectionItem);
+    if (resultNotFound(collectionsAddrs)) return [];
+
+    const inCollectionIds = joinIds(
+      collectionsCenter.map((item: { id: string }) => item.id)
+    );
+
+    const queryCollectionItemQuery = `
+      select * from vw_collection_item_details
+      where collection_center_id in (${inCollectionIds});
+    `;
+
+    const collectionsItems = await connection.query(queryCollectionItemQuery);
+    if (resultNotFound(collectionsItems)) return [];
 
     return formatedCollectionsDetails({
       collectionsAddrs,
@@ -71,13 +79,16 @@ class CollectionCenterService {
     });
   }
 
-  async create(data: ICollectionCenter) {
-    const { id, name, email, image, phone, description } = data;
-    const findByEmailQuery = `select id from tbl_collection_center where email = ?;`;
+  async create({ id, name, email, image, phone, description }: ICollectionCenter) {
+    const insertData = [id, name, email, image, phone, description];
+    
+    const findByEmailQuery = `
+      select id from tbl_collection_center where email = ?;
+    `;
 
-    const [findByEmailResponse] = await connection.query(findByEmailQuery, [
-      data.email,
-    ]);
+    const [findByEmailResponse] = await connection.query(
+      findByEmailQuery, [email]
+    );
 
     if (findByEmailResponse) throw Error("collection center already exists");
 
@@ -87,14 +98,7 @@ class CollectionCenterService {
       values (?, ?, ?, ?, ?, ?);
     `;
 
-    await connection.query(createQuery, [
-      id,
-      name,
-      email,
-      image,
-      phone,
-      description,
-    ]);
+    await connection.query(createQuery, insertData);
 
     return { message: `collection center successfully created` };
   }
