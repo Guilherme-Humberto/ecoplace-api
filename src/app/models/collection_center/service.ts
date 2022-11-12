@@ -10,8 +10,19 @@ const joinIds = (idsArray: string[]) => {
 
 class CollectionCenterService {
   async listAll() {
-    const query = `select name, description, image, phone, email from tbl_collection_center;`;
-    return await connection.query(query);
+    const collectionCenterQuery = `select * from vw_collection_center_details;`;
+    const collectionAddrsQuery = `select * from vw_collection_addrs;`;
+    const queryCollectionItemQuery = `select * from vw_collection_item_details;`;
+
+    const collectionsItems = await connection.query(queryCollectionItemQuery);
+    const collectionsCenter = await connection.query(collectionCenterQuery);
+    const collectionsAddrs = await connection.query(collectionAddrsQuery);
+
+    return formatedCollectionsDetails({
+      collectionsAddrs,
+      collectionsCenter,
+      collectionsItems,
+    });
   }
 
   async getById(id: string) {

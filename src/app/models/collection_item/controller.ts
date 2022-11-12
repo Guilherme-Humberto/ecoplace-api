@@ -55,6 +55,7 @@ class CollectionItemController {
       const result = await service.update(collectionItemId, data);
       return response.status(200).json(result);
     } catch ({ message: error }) {
+      console.log(error)
       return response.status(400).json({ error });
     }
   }
