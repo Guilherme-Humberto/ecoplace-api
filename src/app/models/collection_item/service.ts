@@ -3,55 +3,62 @@ import { ICollectionItem } from "@interfaces/index";
 
 class CollectionItemService {
   async list() {
-    const query = `
-      select id, title, slug, image from tbl_collection_item order by created_at desc`
+    const selectAllSQL = `
+      select id, title, slug, image from tbl_collection_item 
+      order by created_at desc;`
     ;
-    return await connection.query(query)
+    return await connection.query(selectAllSQL)
   }
   
   async getById(id: string) {
-    const query = `select title, slug from tbl_collection_item where id = ?;`;
-    const [collectionItem] = await connection.query(query, [id])
+    const selectByIdSQL = `select title, slug from tbl_collection_item where id = ?;`;
+    const [collectionItem] = await connection.query(selectByIdSQL, [id])
     return collectionItem
   }
   
   async create(data: ICollectionItem) {
-    const { id, title, slug, image } = data
-
-    const findBySlug = `select id from tbl_collection_item where slug = ?;`;
-    const [collectionItem] = await connection.query(findBySlug, [slug]);
-
+    const selectBySlugSQL = `select id from tbl_collection_item where slug = ?;`;
+    const [collectionItem] = await connection.query(selectBySlugSQL, [data.slug]);
     if (collectionItem) throw Error('collection item already exists')
 
-    const createQuery = `
+    const insertCollectionItemSQL = `
       insert into tbl_collection_item 
       (id, title, slug, image) values (?, ?, ?, ?);
     `;
 
-    await connection.query(createQuery, [id, title, slug, image]);
-    
-    return { message: `${slug} successfully created` }
+    const parametersBody = [
+      data.id,
+      data.title,
+      data.slug,
+      data.image
+    ]
+
+    await connection.query(insertCollectionItemSQL, parametersBody);
+    return { message: `${data.slug} successfully created` }
   }
   
   async update(id: string, data: ICollectionItem) {
-    const { title, slug } = data
-
-    const findBySlugQuery = `select id from tbl_collection_item where id = ?;`;
-    const [collectionItem] = await connection.query(findBySlugQuery, [id]);
-
+    const selectByIdSQL = `select id from tbl_collection_item where id = ?;`;
+    const [collectionItem] = await connection.query(selectByIdSQL, [id]);
     if (!collectionItem) throw Error('collection item not found')
 
-    const updateQuery = `
-      update tbl_collection_item set title = ?, slug = ? where id = ?;
+    const updateSQL = `
+      update tbl_collection_item set title = ?, slug = ?, image = ? where id = ?;
     `;
 
-    await connection.query(updateQuery, [title, slug, id]);
-    return { message: `${slug} updated` }
+    const parametersBody = [
+      data.title || collectionItem.title,
+      data.slug || collectionItem.slug,
+      data.image || collectionItem.image
+    ]
+
+    await connection.query(updateSQL, [...parametersBody, id]);
+    return { message: `${data.slug} updated` }
   }
   
   async delete(id: string) {
-    const query = `delete from tbl_collection_item where id = ?;`;
-    await connection.query(query, [id])
+    const deleteSQL = `delete from tbl_collection_item where id = ?;`;
+    await connection.query(deleteSQL, [id])
     return { message: `${id} deleted` }
   }
   

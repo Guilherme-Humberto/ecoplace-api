@@ -3,6 +3,7 @@ import AdminController from "@app/models/admin/controller";
 import ContributorController from "@app/models/contributor/controller";
 import CollectionCenterController from "@app/models/collection_center/controller";
 import CollectionItemController from "@app/models/collection_item/controller";
+import CollectionAddrssController from "@app/models/collection_addrs/controller";
 
 const router = Router();
 
@@ -25,5 +26,8 @@ router.get("/collectionItem/get", CollectionItemController.getOneById);
 router.post("/collectionItem/create", CollectionItemController.createCollectionItem);
 router.delete("/collectionItem/delete", CollectionItemController.deleteCollectionItem);
 router.put("/collectionItem/update", CollectionItemController.updateCollectionItem);
+
+router.get("/collectionAddrs/listAll", CollectionAddrssController.listAll);
+router.put("/collectionAddrs/update", CollectionAddrssController.updateCollectionAddrss);
 
 export { router };

@@ -29,6 +29,13 @@ export interface ICollectionAddrs {
   collection_center_id?: string
 }
 
+export interface ICreateCollectionAddrs {
+  addrs_name: string
+  addrs_number: number
+  zip_code: string
+  district: string
+}
+
 export interface IFormatCollectionDetails {
   collectionsCenter: ICollectionCenter[]
   collectionsItems: ICollectionItem[]
