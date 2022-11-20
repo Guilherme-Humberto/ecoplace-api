@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import service from "./service";
 import { validateGetEntityById } from "@app/validation";
 import { ICollectionItem } from "@interfaces/index";
-import { generateSlug } from "@app/utils";
+import { generateSlug, generateUUID } from "@app/utils";
 
 class CollectionItemController {
   async listAll(_request: Request, response: Response) {
@@ -28,9 +28,11 @@ class CollectionItemController {
 
   async createCollectionItem(request: Request, response: Response) {
     try {
+
       const data: ICollectionItem = {
-        slug: generateSlug(request.body.title),
         ...request.body,
+        slug: generateSlug(request.body.title),
+        id: request.body.id ? request.body.id : generateUUID(),
       };
 
       const result = await service.create(data);
@@ -53,6 +55,7 @@ class CollectionItemController {
       const result = await service.update(collectionItemId, data);
       return response.status(200).json(result);
     } catch ({ message: error }) {
+      console.log(error)
       return response.status(400).json({ error });
     }
   }

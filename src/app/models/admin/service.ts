@@ -10,9 +10,8 @@ class AdminService {
     const { email, password } = data;
 
     const query = `
-      select name, email,  status 
-      from admin where email = ? 
-      and password = ?
+      select name, email, status from tbl_admin 
+      where email = ? and password = ?
     `;
 
     const [response] = await connection.query(query, [email, password]);

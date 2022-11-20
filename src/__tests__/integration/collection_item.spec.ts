@@ -11,7 +11,7 @@ describe("Collection Item", () => {
     id,
     title: collectionItemMock.title,
     slug: collectionItemMock.slug,
-    collectionCenterId: collectionItemMock.collectionCenterId
+    image: collectionItemMock.image
   };
 
   test("should return success in create collection item", async () => {

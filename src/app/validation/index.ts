@@ -1,5 +1,6 @@
-import { validate as validateUUID } from 'uuid'
+import { validate as validateUUID } from "uuid";
 import { IContributor, ICollectionCenter } from "@interfaces/index";
+import { IbgeApi } from "@app/api";
 
 export const validateCreateContributor = (data: IContributor) => {
   const isEmptyData = !data.email || !data.name;
@@ -39,4 +40,26 @@ export const validateGetEntityById = (id: string) => {
   if (!validateUUID(id)) throw Error("Invalid id format");
   if (isEmptyData) throw Error("Empty or invalid data");
   if (isValidTypeData) throw Error("Invalid collectionCenterById data");
+};
+
+export const validateRegionByIds = async (
+  mesoRegionId: number,
+  microRegionId?: number
+) => {
+  const { data: mesoRegion } = await IbgeApi.get(`/estados/${mesoRegionId}`);
+  const mesoRegionExists = Array.isArray(mesoRegion) && mesoRegion.length == 0;
+
+  if (!mesoRegion || mesoRegionExists) throw Error("state not found");
+
+  let microRegion;
+
+  if (microRegionId) {
+    const { data: microRegionResponse } = await IbgeApi.get(
+      `/microrregioes/${microRegionId}`
+    );
+    microRegion = microRegionResponse;
+  }
+
+  if (!microRegion) throw Error("city not found");
+  return mesoRegion
 };

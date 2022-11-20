@@ -24,7 +24,7 @@ describe("Admin", () => {
     const dataInput = { email: "admin@email.com", password: "123" };
 
     const dataOutput = {
-      name: "Admin",
+      name: "admin",
       email: "admin@email.com",
       status: 0,
     };
