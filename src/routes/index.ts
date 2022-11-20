@@ -20,6 +20,8 @@ router.get("/collectionCenter/get", CollectionCenterController.getCollectionById
 router.post("/collectionCenter/create", CollectionCenterController.createCollectionCenter);
 router.delete("/collectionCenter/delete", CollectionCenterController.deleteCollectionCenter);
 router.put("/collectionCenter/update", CollectionCenterController.updateCollectionCenter);
+router.post("/collectionCenter/addrs/create", CollectionCenterController.createCollectionCenterAddrs);
+router.post("/collectionCenter/items/create", CollectionCenterController.createCollectionCenterItems);
 router.put("/collectionCenter/items/update", CollectionCenterController.updateCollectionCenterItems);
 router.put("/collectionCenter/items/delete", CollectionCenterController.removeCollectionCenterItems);
 
@@ -30,6 +32,7 @@ router.delete("/collectionItem/delete", CollectionItemController.deleteCollectio
 router.put("/collectionItem/update", CollectionItemController.updateCollectionItem);
 
 router.get("/collectionAddrs/listAll", CollectionAddrssController.listAll);
+router.post("/collectionAddrs/create", CollectionAddrssController.createCollectionAddrs);
 router.put("/collectionAddrs/update", CollectionAddrssController.updateCollectionAddrss);
 
 export { router };

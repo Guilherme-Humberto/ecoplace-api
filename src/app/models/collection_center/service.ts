@@ -1,6 +1,6 @@
 import { formatedCollectionsDetails } from "@app/utils";
 import { connection } from "@database/connection";
-import { ICollectionCenter } from "@interfaces/index";
+import { ICollectionCenter, ICreateCollectionCenterAddrs, ICreateCollectionCenterItems } from "@interfaces/index";
 
 const resultNotFound = (response: any) => !response || response.length == 0;
 
@@ -90,15 +90,22 @@ class CollectionCenterService {
     });
   }
 
-  async create({ id, name, email, image, phone, description }: ICollectionCenter) {
-    const insertData = [id, name, email, image, phone, description];
+  async create(data: ICollectionCenter) {
+    const parametersBody = [
+      data.id,
+      data.name,
+      data.email,
+      data.image,
+      data.phone,
+      data.description,
+    ];
     
     const selectByEmailSQL = `
       select id from tbl_collection_center where email = ?;
     `;
 
     const [findByEmailResponse] = await connection.query(
-      selectByEmailSQL, [email]
+      selectByEmailSQL, [data.email]
     );
 
     if (findByEmailResponse) throw Error("collection center already exists");
@@ -109,8 +116,44 @@ class CollectionCenterService {
       values (?, ?, ?, ?, ?, ?);
     `;
 
-    await connection.query(insertCollectionCenterSQL, insertData);
-    return { message: `collection center successfully created` };
+    await connection.query(insertCollectionCenterSQL, parametersBody);
+    const [collectionCreated] =  await connection.query(
+      selectByEmailSQL, [data.email]
+    )
+
+    return collectionCreated
+  }
+
+  async createCenterAddrss(data: ICreateCollectionCenterAddrs) {
+    const parametersBody = [
+      data.mesoregion_id,
+      data.microregion_id,
+      data.collection_addrs_id,
+      data.collection_center_id
+    ];
+    
+    const insertCenterAddrsSQL = `
+      insert into tbl_collection_center_addrs 
+      (mesoregion_id, microregion_id, collection_addrs_id, collection_center_id) values (?, ?, ?, ?);
+    `;
+
+    await connection.query(insertCenterAddrsSQL, parametersBody);
+    return { message: `${data.collection_addrs_id} - ${data.collection_center_id} created` }
+  }
+
+  async createCollectionCenterItems(data: ICreateCollectionCenterItems) {
+    const parametersBody = [
+      data.collection_center_id,
+      data.collection_item_id
+    ];
+    
+    const insertCenterItemSQL = `
+      insert into tbl_collection_center_item
+      (collection_center_id, collection_item_id) values (?, ?);
+    `;
+
+    await connection.query(insertCenterItemSQL, parametersBody);
+    return { message: `${data.collection_center_id} - ${data.collection_item_id} created` }
   }
 
   async delete(id: string) {

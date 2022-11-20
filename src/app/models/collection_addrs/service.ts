@@ -7,6 +7,25 @@ class CollectionAddrsService {
     return await connection.query(selectAllSQL);
   }
 
+  async create(data: ICreateCollectionAddrs) {
+    const parametersBody = [
+      data.id,
+      data.addrs_name,
+      data.addrs_number,
+      data.zip_code,
+      data.district,
+    ];
+
+    const insertAddrsSQL = `
+      insert into tbl_collection_addrs 
+      (id, addrs_name, addrs_number, zip_code, district) values (?, ?, ?, ?, ?);
+    `;
+
+    await connection.query(insertAddrsSQL, parametersBody);
+    return { message: `address created` }
+
+  }
+
   async update(id: string, data: ICreateCollectionAddrs) {
     const selectByIdSQL = `select * from tbl_collection_addrs where id = ?;`;
 

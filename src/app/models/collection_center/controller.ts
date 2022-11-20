@@ -56,8 +56,16 @@ class CollectionCenterController {
       };
 
       validateCreateCollectionCenter(data);
-
       const result = await service.create(data);
+      return response.status(200).json(result);
+    } catch ({ message: error }) {
+      return response.status(400).json({ error });
+    }
+  }
+  
+  async createCollectionCenterAddrs(request: Request, response: Response) {
+    try {
+      const result = await service.createCenterAddrss(request.body);
       return response.status(200).json(result);
     } catch ({ message: error }) {
       return response.status(400).json({ error });
@@ -104,6 +112,21 @@ class CollectionCenterController {
       itemIdArray.forEach((item: string) => validateGetEntityById(item))
 
       const result = await service.updateCollectionItems(collectionCenterId, itemIdArray);
+      return response.status(200).json(result);
+    } catch ({ message: error }) {
+      console.log(error)
+      return response.status(400).json({ error });
+    }
+  }
+
+  async createCollectionCenterItems(request: Request, response: Response) {
+    try {
+      const { collection_center_id, collection_item_id } = request.body
+
+      validateGetEntityById(collection_center_id)
+      validateGetEntityById(collection_item_id)
+
+      const result = await service.createCollectionCenterItems(request.body);
       return response.status(200).json(result);
     } catch ({ message: error }) {
       console.log(error)

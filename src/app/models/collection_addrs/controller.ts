@@ -1,3 +1,4 @@
+import { generateUUID } from "@app/utils";
 import { validateGetEntityById } from "@app/validation";
 import { Request, Response } from "express";
 import service from "./service";
@@ -6,6 +7,20 @@ class CollectionAddrsController {
   async listAll(_request: Request, response: Response) {
     try {
       return await service.listAll();
+    } catch ({ message: error }) {
+      return response.status(400).json({ error });
+    }
+  }
+
+  async createCollectionAddrs(request: Request, response: Response) {
+    try {
+      const data = {
+        id: request.body.id ? request.body.id : generateUUID(),
+        ...request.body
+      }
+
+      const result = await service.create(data)
+      return response.status(200).json(result);
     } catch ({ message: error }) {
       return response.status(400).json({ error });
     }

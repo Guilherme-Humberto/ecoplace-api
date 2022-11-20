@@ -30,6 +30,7 @@ export interface ICollectionAddrs {
 }
 
 export interface ICreateCollectionAddrs {
+  id?: string
   addrs_name: string
   addrs_number: number
   zip_code: string
@@ -39,6 +40,18 @@ export interface ICreateCollectionAddrs {
 export interface IRegions {
   mesoregion_id: number
   microregion_id: number
+}
+
+export interface ICreateCollectionCenterAddrs {
+  mesoregion_id: number
+  microregion_id: number
+  collection_center_id: string
+  collection_addrs_id: string
+}
+
+export interface ICreateCollectionCenterItems {
+  collection_center_id: string
+  collection_item_id: string
 }
 
 export interface IFormatCollectionDetails {
