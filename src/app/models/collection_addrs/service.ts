@@ -1,5 +1,5 @@
 import { connection } from "@database/connection";
-import { ICreateCollectionAddrs } from "@interfaces/index";
+import { ICreateCollectionAddrs, IRegions } from "@interfaces/index";
 
 class CollectionAddrsService {
   async listAll() {
@@ -27,6 +27,38 @@ class CollectionAddrsService {
 
     await connection.query(updateAddrsSQL, [...parametersBody, id]);
     return { message: `${id} updated` };
+  }
+
+  async updateRegions(collectionAddrsId: string, collectionCenterId: string, data: IRegions) {
+    const selectByIdSQL = `
+      select * from tbl_collection_center_addrs 
+      where collection_center_id = ? and collection_addrs_id = ?;
+    `;
+
+    const [addrsResponse] = await connection.query(selectByIdSQL, [
+      collectionCenterId,
+      collectionAddrsId,
+    ]);
+    
+    if (!addrsResponse) throw Error("Record not found");
+
+    const parametersBody = [
+      data.mesoregion_id || addrsResponse.mesoregion_id,
+      data.microregion_id || addrsResponse.microregion_id
+    ];
+
+    const updateAddrsSQL = `
+      update tbl_collection_center_addrs set mesoregion_id = ?, 
+      microregion_id = ? where collection_center_id = ? and collection_addrs_id = ?;
+    `;
+
+    await connection.query(updateAddrsSQL, [
+      ...parametersBody,
+      collectionCenterId,
+      collectionAddrsId,
+    ]);
+
+    return { message: `${collectionAddrsId} - ${collectionCenterId} updated` };
   }
 }
 

@@ -20,6 +20,8 @@ router.get("/collectionCenter/get", CollectionCenterController.getCollectionById
 router.post("/collectionCenter/create", CollectionCenterController.createCollectionCenter);
 router.delete("/collectionCenter/delete", CollectionCenterController.deleteCollectionCenter);
 router.put("/collectionCenter/update", CollectionCenterController.updateCollectionCenter);
+router.put("/collectionCenter/items/update", CollectionCenterController.updateCollectionCenterItems);
+router.put("/collectionCenter/items/delete", CollectionCenterController.removeCollectionCenterItems);
 
 router.get("/collectionItem/listAll", CollectionItemController.listAll);
 router.get("/collectionItem/get", CollectionItemController.getOneById);

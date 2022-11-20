@@ -94,6 +94,38 @@ class CollectionCenterController {
       return response.status(400).json({ error });
     }
   }
+
+  async updateCollectionCenterItems(request: Request, response: Response) {
+    try {
+      const collectionCenterId = String(request.query.id);
+      const itemIdArray = request.body.data as string[]
+
+      if (itemIdArray.length == 0) throw Error('Ids list is empty')
+      itemIdArray.forEach((item: string) => validateGetEntityById(item))
+
+      const result = await service.updateCollectionItems(collectionCenterId, itemIdArray);
+      return response.status(200).json(result);
+    } catch ({ message: error }) {
+      console.log(error)
+      return response.status(400).json({ error });
+    }
+  }
+
+  async removeCollectionCenterItems(request: Request, response: Response) {
+    try {
+      const collectionCenterId = String(request.query.id);
+      const itemIdArray = request.body.data as string[]
+
+      if (itemIdArray.length == 0) throw Error('Ids list is empty')
+      itemIdArray.forEach((item: string) => validateGetEntityById(item))
+
+      const result = await service.removeCollectionItems(collectionCenterId, itemIdArray);
+      return response.status(200).json(result);
+    } catch ({ message: error }) {
+      console.log(error)
+      return response.status(400).json({ error });
+    }
+  }
 }
 
 export default new CollectionCenterController();

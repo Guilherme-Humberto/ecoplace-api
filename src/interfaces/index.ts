@@ -36,6 +36,11 @@ export interface ICreateCollectionAddrs {
   district: string
 }
 
+export interface IRegions {
+  mesoregion_id: number
+  microregion_id: number
+}
+
 export interface IFormatCollectionDetails {
   collectionsCenter: ICollectionCenter[]
   collectionsItems: ICollectionItem[]

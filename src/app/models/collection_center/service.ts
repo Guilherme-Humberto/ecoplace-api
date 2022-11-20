@@ -1,6 +1,6 @@
 import { formatedCollectionsDetails } from "@app/utils";
 import { connection } from "@database/connection";
-import { ICollectionCenter, ICreateCollectionAddrs } from "@interfaces/index";
+import { ICollectionCenter } from "@interfaces/index";
 
 const resultNotFound = (response: any) => !response || response.length == 0;
 
@@ -141,6 +141,39 @@ class CollectionCenterService {
 
     await connection.query(updateSQL, [...parametersBody, id]);
     return { message: `${id} updated` };
+  }
+
+  async updateCollectionItems(id: string, data: string[]) {
+    const deleItems = data.map(async (itemId: string) => {
+      const deleteQuery = `
+        delete from tbl_collection_center_item 
+        where collection_center_id = ? and collection_item_id = ?
+      `
+      return await connection.query(deleteQuery, [id, itemId]);
+    })
+    
+    const insertItems = data.map(async (itemId: string) => {
+      const insertQuery = `
+        insert into tbl_collection_center_item 
+        (collection_center_id, collection_item_id) values (?, ?)
+      `
+      return await connection.query(insertQuery, [id, itemId]);
+    })
+    
+    await Promise.all(deleItems)
+    return await Promise.all(insertItems)
+  }
+
+  async removeCollectionItems(id: string, data: string[]) {
+    const removeItems = data.map(async (itemId: string) => {
+      const insertQuery = `
+        delete from tbl_collection_center_item 
+        where collection_center_id = ? and collection_item_id = ?
+      `;
+      return await connection.query(insertQuery, [id, itemId]);
+    });
+
+    return await Promise.all(removeItems);
   }
 }
 
