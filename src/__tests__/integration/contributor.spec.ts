@@ -1,11 +1,14 @@
 import { describe, expect, test } from "vitest";
 import request from "supertest";
 import app from "../../app";
-import ContributorService from '../../app/models/contributor/service'
+import deleteService from "../../app/models/contributor/services/delete";
+import { generateUUID } from "@shared/utils";
 
 describe("Contributor", () => {
+  const id = generateUUID();
+
   test("should return success in contributor register", async () => {
-    const data = { name: "test", email: "test@email.com" };
+    const data = { id, name: "test", email: "test@email.com" };
 
     const response = await request(app.express)
       .post("/contributor/create")
@@ -14,20 +17,14 @@ describe("Contributor", () => {
     const errorText = JSON.parse(response.text);
 
     expect(errorText).not.toMatchObject({
-      error: "contributor alreary exists",
+      error: "Contributor alreary exists",
     });
 
-    expect(errorText).not.toMatchObject({
-      error: "non-existent or invalid data",
-    });
-
-    expect(response.body).toMatchObject({ message: "contributor created" });
+    expect(response.body).toMatchObject({ status: "created" });
   });
 
-  test("should return success in contributor register", async () => {
-    const data = { email: "test@email.com" };
-    const result = await ContributorService.delete(data.email)
-
-    expect(result).toMatchObject({ message: `${data.email} deleted` });
+  test("should return success in contributor delete service", async () => {
+    const result = await deleteService.execute(id);
+    expect(result).toMatchObject({ status: `deleted` });
   });
 });

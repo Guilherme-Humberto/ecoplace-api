@@ -1,5 +1,5 @@
 import { describe, expect, it, test } from "vitest";
-import { validateRegionByIds } from "@app/validation";
+import { validateRegionByIds } from "@shared/validation";
 
 describe("Validation get region by ids", () => {
   const spRegionId = {

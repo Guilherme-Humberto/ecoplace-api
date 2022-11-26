@@ -25,7 +25,8 @@
       "@app/*": ["./app/*"],
       "@database/*": ["./database/*"],
       "@mocks/*": ["./mocks/*"],
-      "@interfaces/*": ["./interfaces/*"]
+      "@shared/*": ["./shared/*"],
+      "@interfaces/*": ["./interfaces/*"],
     }
   },
   "include": ["src"],

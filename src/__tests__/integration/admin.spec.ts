@@ -4,7 +4,7 @@ import app from "../../app";
 
 describe("Admin", () => {
   test("should return data properties", async () => {
-    const data = { email: "admin@email.com", password: "123" };
+    const data = { email: "email@admin.com", password: "123" };
 
     expect(data).toHaveProperty("email");
     expect(data).toHaveProperty("password");
@@ -21,11 +21,11 @@ describe("Admin", () => {
   });
 
   test("should return admin test (login)", async () => {
-    const dataInput = { email: "admin@email.com", password: "123" };
+    const dataInput = { email: "email@admin.com", password: "123" };
 
     const dataOutput = {
-      name: "admin",
-      email: "admin@email.com",
+      name: "Guilherme",
+      email: "email@admin.com",
       status: 0,
     };
 
@@ -33,6 +33,8 @@ describe("Admin", () => {
       .post("/admin/login")
       .send(dataInput);
 
-    expect(response.body).toMatchObject(dataOutput);
+    expect(response.body).toMatchObject({
+      status: 'returned', data: dataOutput
+    });
   });
 });

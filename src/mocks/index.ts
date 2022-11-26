@@ -1,5 +1,4 @@
-export const collectionCenterMock = {
-  id: '1',
+export const zoneMock = {
   name: "test",
   description: "Ponto de coleta teste",
   image: "url://imagem",
@@ -7,10 +6,16 @@ export const collectionCenterMock = {
   email: "test@email.com",
 };
 
-export const collectionItemMock = {
-  id: '1',
-  title: 'Teste',
-  slug: 'teste',
-  image: 'https://res.cloudinary.com/df27siyzg/image/upload/v1667261080/image1_ycnl7x.svg',
-  collectionCenterId: '40bd5352-58ad-11ed-a455-0045e2952c90'
+export const categoryMock = {
+  title: "Teste",
+  slug: "teste",
+  image:
+    "https://res.cloudinary.com/df27siyzg/image/upload/v1667261080/image1_ycnl7x.svg",
+};
+
+export const addrsMock = {
+  addrs_name: "Teste",
+  addrs_number: 4,
+  zip_code: "9999999",
+  district: "Bairro Teste",
 };

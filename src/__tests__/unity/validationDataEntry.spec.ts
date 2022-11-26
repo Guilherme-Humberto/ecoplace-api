@@ -5,7 +5,7 @@ import {
   validateCreateContributor,
   validateCreateCollectionCenter,
   validateGetEntityById,
-} from "@app/validation";
+} from "@shared/validation";
 
 describe("Validation data input", () => {
   test("should return error if data is empty (contributor)", () => {

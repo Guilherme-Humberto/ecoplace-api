@@ -1,38 +1,39 @@
 import { Router } from "express";
-import AdminController from "@app/models/admin/controller";
-import ContributorController from "@app/models/contributor/controller";
-import CollectionCenterController from "@app/models/collection_center/controller";
-import CollectionItemController from "@app/models/collection_item/controller";
-import CollectionAddrssController from "@app/models/collection_addrs/controller";
+import admin from "@app/models/admin/http/controllers";
+import contributor from "@app/models/contributor/http/controllers";
+import zone from "@app/models/zone/http/controllers";
+import category from "@app/models/category/http/controllers";
+import address from "@app/models/address/http/controllers";
 
 const router = Router();
 
 router.get("/healthCheck", (_request, response) => response.json({ ok: true }));
 
-router.post("/admin/login", AdminController.login);
+router.post("/admin/login", admin.login);
 
-router.get("/contributor/list", ContributorController.listAll);
-router.post("/contributor/create", ContributorController.create);
+router.get("/contributor/list", contributor.listAll);
+router.post("/contributor/create", contributor.create);
+router.delete("/contributor/delete", contributor.delete);
 
-router.post("/collectionCenter", CollectionCenterController.getCollectionCenter);
-router.get("/collectionCenter/listAll", CollectionCenterController.listAll);
-router.get("/collectionCenter/get", CollectionCenterController.getCollectionById);
-router.post("/collectionCenter/create", CollectionCenterController.createCollectionCenter);
-router.delete("/collectionCenter/delete", CollectionCenterController.deleteCollectionCenter);
-router.put("/collectionCenter/update", CollectionCenterController.updateCollectionCenter);
-router.post("/collectionCenter/addrs/create", CollectionCenterController.createCollectionCenterAddrs);
-router.post("/collectionCenter/items/create", CollectionCenterController.createCollectionCenterItems);
-router.put("/collectionCenter/items/update", CollectionCenterController.updateCollectionCenterItems);
-router.put("/collectionCenter/items/delete", CollectionCenterController.removeCollectionCenterItems);
+router.post("/zone", zone.getDetails);
+router.get("/zone/listAll", zone.listAll);
+router.get("/zone/get", zone.getById);
+router.post("/zone/create", zone.create);
+router.delete("/zone/delete", zone.delete);
+router.put("/zone/update", zone.update);
+router.post("/zone/addrs/create", zone.createZonerAddrs);
+router.post("/zone/items/create", zone.createZoneCategory);
+router.put("/zone/items/update", zone.updateZoneCategory);
+router.put("/zone/items/delete", zone.removeZoneCategory);
 
-router.get("/collectionItem/listAll", CollectionItemController.listAll);
-router.get("/collectionItem/get", CollectionItemController.getOneById);
-router.post("/collectionItem/create", CollectionItemController.createCollectionItem);
-router.delete("/collectionItem/delete", CollectionItemController.deleteCollectionItem);
-router.put("/collectionItem/update", CollectionItemController.updateCollectionItem);
+router.get("/category/listAll", category.listAll);
+router.get("/category/get", category.getById);
+router.post("/category/create", category.create);
+router.delete("/category/delete", category.delete);
+router.put("/category/update", category.update);
 
-router.get("/collectionAddrs/listAll", CollectionAddrssController.listAll);
-router.post("/collectionAddrs/create", CollectionAddrssController.createCollectionAddrs);
-router.put("/collectionAddrs/update", CollectionAddrssController.updateCollectionAddrss);
+router.get("/address/listAll", address.listAll);
+router.post("/address/create", address.create);
+router.put("/address/update", address.update);
 
 export { router };
