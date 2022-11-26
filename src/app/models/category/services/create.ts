@@ -18,8 +18,8 @@ class CreateCategoryService {
     const parametersBody = [data.id, data.title, data.slug, data.image];
     await connection.query(insertCategorySQL, parametersBody);
 
-    return { status: 'created' };
+    return { status: "created" };
   }
 }
 
-export default new CreateCategoryService()
+export default new CreateCategoryService();

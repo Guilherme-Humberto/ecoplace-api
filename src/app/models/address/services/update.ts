@@ -26,4 +26,4 @@ class UpdateAddressService {
   }
 }
 
-export default new UpdateAddressService()
+export default new UpdateAddressService();

@@ -8,15 +8,17 @@ class UpdateRegionsAddressService {
     zoneId: string,
     data: IRegionsIds
   ): Promise<IStatusResponse> {
-
-    const regionsParameters = [zoneId, addresId]
+    const regionsParameters = [zoneId, addresId];
 
     const selectByIdSQL = `
       select * from tbl_zone_addrs 
       where zone_id = ? and addrs_id = ?;
     `;
 
-    const [addrsResponse] = await connection.query(selectByIdSQL, regionsParameters);
+    const [addrsResponse] = await connection.query(
+      selectByIdSQL,
+      regionsParameters
+    );
     if (!addrsResponse) throw Error("Address not found");
 
     const parametersBody = [
@@ -31,11 +33,11 @@ class UpdateRegionsAddressService {
 
     await connection.query(updateAddrsSQL, [
       ...parametersBody,
-      ...regionsParameters
+      ...regionsParameters,
     ]);
 
     return { status: "updated" };
   }
 }
 
-export default new UpdateRegionsAddressService()
+export default new UpdateRegionsAddressService();

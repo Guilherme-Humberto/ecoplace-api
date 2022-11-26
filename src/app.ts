@@ -2,7 +2,7 @@ import "dotenv/config";
 
 import express from "express";
 import morgan from "morgan";
-import cors from 'cors'
+import cors from "cors";
 import { router } from "./routes";
 
 class Application {
@@ -21,7 +21,7 @@ class Application {
   private middlewares() {
     this.express.use(express.json());
     this.express.use(morgan("dev"));
-    this.express.use(cors())
+    this.express.use(cors());
   }
 }
 

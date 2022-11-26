@@ -24,7 +24,7 @@ class ContributorController {
 
   async delete(request: Request, response: Response) {
     try {
-      const contributorId = String(request.query.id)
+      const contributorId = String(request.query.id);
       const result = await deleteService.execute(contributorId);
       return response.status(200).json(result);
     } catch ({ message: error }) {

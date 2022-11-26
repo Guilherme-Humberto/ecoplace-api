@@ -10,7 +10,7 @@ class DeleteZoneCategoryService {
       `;
       return await connection.query(insertQuery, [id, itemId]);
     });
-    
+
     await Promise.all(removeItems);
     return { status: "deleted" };
   }

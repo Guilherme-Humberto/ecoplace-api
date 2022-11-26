@@ -5,7 +5,7 @@ class DeleteAddressService {
   async execute(id: string): Promise<IStatusResponse> {
     const deleteSQL = `delete from tbl_addrs where id = ?;`;
     await connection.query(deleteSQL, [id]);
-    return { status: "deleted", };
+    return { status: "deleted" };
   }
 }
 

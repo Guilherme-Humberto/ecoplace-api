@@ -11,7 +11,7 @@ class GetByIdCategoryService {
       from tbl_category where id = ?;
     `;
     const [response] = await connection.query(selectByIdSQL, [id]);
-    return { status: 'returned', data: response };
+    return { status: "returned", data: response };
   }
 }
 

@@ -17,7 +17,7 @@ class CreateZoneAddrsService {
     `;
 
     await connection.query(insertZoneAddrsSQL, parametersBody);
-    return { status: 'created' };
+    return { status: "created" };
   }
 }
 

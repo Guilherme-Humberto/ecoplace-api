@@ -3,7 +3,8 @@ import { formatedZoneDetails } from "@shared/utils";
 import { ShowZoneDetailsServiceDto } from "../../dto";
 
 const resultNotFound = (response: any) => !response || response.length == 0;
-const joinIds = (idsArray: string[]) => idsArray.map((id) => `"${id}"`).join(",");
+const joinIds = (idsArray: string[]) =>
+  idsArray.map((id) => `"${id}"`).join(",");
 
 class ZoneDetailsService {
   async execute(data: ShowZoneDetailsServiceDto) {
@@ -24,10 +25,7 @@ class ZoneDetailsService {
       where mesoregion_id = ? and microregion_id = ? ${conditional}
     `;
 
-    const zones = await connection.query(
-      selectZoneSQL,
-      regionParameters
-    );
+    const zones = await connection.query(selectZoneSQL, regionParameters);
 
     if (resultNotFound(zones)) return [];
 
@@ -43,9 +41,7 @@ class ZoneDetailsService {
 
     if (resultNotFound(zoneAddrs)) return [];
 
-    const inZonesIds = joinIds(
-      zones.map((item: { id: string }) => item.id)
-    );
+    const inZonesIds = joinIds(zones.map((item: { id: string }) => item.id));
 
     const selectZoneCategorySQL = `
       select * from vw_zone_category
@@ -63,4 +59,4 @@ class ZoneDetailsService {
   }
 }
 
-export default new ZoneDetailsService()
+export default new ZoneDetailsService();

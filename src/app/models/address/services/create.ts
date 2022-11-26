@@ -17,7 +17,7 @@ class CreateAddressService {
     `;
 
     await connection.query(insertAddrsSQL, parametersBody);
-    return { status: 'created' };
+    return { status: "created" };
   }
 }
 

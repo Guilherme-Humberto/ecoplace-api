@@ -21,8 +21,8 @@ class UpdateZoneCategoryService {
 
     await Promise.all(deleteZoneCategories);
     await Promise.all(insertZoneCategories);
-    return { status: 'updated' }
+    return { status: "updated" };
   }
 }
 
-export default new UpdateZoneCategoryService()
+export default new UpdateZoneCategoryService();

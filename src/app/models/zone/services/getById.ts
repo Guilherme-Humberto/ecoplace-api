@@ -15,4 +15,4 @@ class GetByIdZoneService {
   }
 }
 
-export default new GetByIdZoneService()
+export default new GetByIdZoneService();

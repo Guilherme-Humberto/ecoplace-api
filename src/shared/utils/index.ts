@@ -14,7 +14,7 @@ export const generateSlug = (value: string) => {
 export const formatedZoneDetails = ({
   zones,
   zoneAddrs,
-  zoneCategories
+  zoneCategories,
 }: IFormatZoneDetails) => {
   const formatedCollections = zones.reduce((prev: any, item) => {
     prev[item.id] = prev[item.id] || [];
@@ -37,6 +37,6 @@ export const formatedZoneDetails = ({
     return prev;
   }, {});
 
-  const keys = Object.keys(formatedCollections)
-  return keys.map(item => formatedCollections[item][0])
+  const keys = Object.keys(formatedCollections);
+  return keys.map((item) => formatedCollections[item][0]);
 };

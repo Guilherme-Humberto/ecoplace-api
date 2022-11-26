@@ -19,4 +19,4 @@ class ListAllZonesService {
   }
 }
 
-export default new ListAllZonesService()
+export default new ListAllZonesService();

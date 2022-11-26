@@ -34,7 +34,8 @@ describe("Admin", () => {
       .send(dataInput);
 
     expect(response.body).toMatchObject({
-      status: 'returned', data: dataOutput
+      status: "returned",
+      data: dataOutput,
     });
   });
 });

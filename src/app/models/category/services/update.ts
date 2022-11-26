@@ -20,8 +20,8 @@ class UpdateCategoryService {
     `;
 
     await connection.query(updateSQL, [...parametersBody, id]);
-    return { status: 'updated' };
+    return { status: "updated" };
   }
 }
 
-export default new UpdateCategoryService()
+export default new UpdateCategoryService();

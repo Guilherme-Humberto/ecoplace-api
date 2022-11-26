@@ -6,12 +6,12 @@ export class AddressDto {
   district: string;
 }
 
-export class IRegionsIds {
-  mesoregion_id: number
-  microregion_id: number
-}
+                        export class IRegionsIds {
+                          mesoregion_id: number;
+                          microregion_id: number;
+                        }
 
-export class CreateAddressDto extends AddressDto {}
-export class UpdateAddressDto extends AddressDto {
-  readonly id: string
-}
+                        export class CreateAddressDto extends AddressDto {}
+                        export class UpdateAddressDto extends AddressDto {
+                          readonly id: string;
+                        }

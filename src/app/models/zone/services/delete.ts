@@ -10,4 +10,4 @@ class DeleteZoneService {
   }
 }
 
-export default new DeleteZoneService()
+export default new DeleteZoneService();

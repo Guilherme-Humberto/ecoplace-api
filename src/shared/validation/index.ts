@@ -61,5 +61,5 @@ export const validateRegionByIds = async (
   }
 
   if (!microRegion) throw Error("city not found");
-  return mesoRegion
+  return mesoRegion;
 };
