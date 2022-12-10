@@ -129,10 +129,10 @@ class CollectionCenterController {
 
   async createZoneCategory(request: Request, response: Response) {
     try {
-      const { collection_center_id, collection_item_id } = request.body;
+      const { zone_id, category_id } = request.body;
 
-      validateGetEntityById(collection_center_id);
-      validateGetEntityById(collection_item_id);
+      validateGetEntityById(zone_id);
+      validateGetEntityById(category_id);
 
       const result = await createZoneCategoryService.execute(request.body);
       return response.status(200).json(result);

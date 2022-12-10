@@ -22,9 +22,9 @@ router.post("/zone/create", zone.create);
 router.delete("/zone/delete", zone.delete);
 router.put("/zone/update", zone.update);
 router.post("/zone/addrs/create", zone.createZonerAddrs);
-router.post("/zone/items/create", zone.createZoneCategory);
-router.put("/zone/items/update", zone.updateZoneCategory);
-router.put("/zone/items/delete", zone.removeZoneCategory);
+router.post("/zone/category/create", zone.createZoneCategory);
+router.put("/zone/category/update", zone.updateZoneCategory);
+router.put("/zone/category/delete", zone.removeZoneCategory);
 
 router.get("/category/listAll", category.listAll);
 router.get("/category/get", category.getById);
