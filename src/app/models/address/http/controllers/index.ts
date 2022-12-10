@@ -31,16 +31,22 @@ class AddrsController {
 
   async update(request: Request, response: Response) {
     try {
-      const addrsId = String(request.query.addrsId);
-      const zoneId = String(request.query.zoneId || "");
+      const { addrs_id, zone_id } = request.query;
 
-      validateGetEntityById(addrsId);
-      if (zoneId && zoneId !== "") validateGetEntityById(zoneId);
+      validateGetEntityById(String(addrs_id));
+      if (zone_id && zone_id !== "") validateGetEntityById(String(zone_id));
 
-      const result = await updateService.execute(addrsId, request.body);
+      const result = await updateService.execute(
+        String(addrs_id),
+        request.body
+      );
 
-      if (zoneId && zoneId !== "") {
-        await updateRegionsService.execute(addrsId, zoneId, request.body);
+      if (zone_id && zone_id !== "") {
+        await updateRegionsService.execute(
+          String(addrs_id),
+          String(zone_id),
+          request.body
+        );
       }
 
       return response.status(200).json(result);
